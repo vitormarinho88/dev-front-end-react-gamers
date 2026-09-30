@@ -8,5 +8,5 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Login />
     <GlobalStyles />
-  </StrictMode>
+  </StrictMode>,
 );
