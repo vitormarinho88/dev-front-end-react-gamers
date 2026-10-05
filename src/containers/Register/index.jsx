@@ -18,13 +18,23 @@ import { api } from '../../services/api.js';
 
 
  
-export function Login() {
+export function Register() {
   
 
   const schema = yup.object({
-  email:yup.string().email('Digite um e-mail válido').required('O e-mail é obrigatorio'),
-  password:yup.string().min(6 , 'A senha deve ter pelo menos 6 caracteres').required('Digite uma senha'),
-  }).required();
+  name: yup.string().required('O nome é Obrigatorio'),
+  email:  
+  yup.string()
+  .email('Digite um e-mail válido')
+  .required('O e-mail é obrigatorio'),
+  password: 
+  yup.string()
+  .min(6 , 'A senha deve ter pelo menos 6 caracteres')
+  .required('Digite uma senha'),
+  confirmPassword:
+  yup.string().oneOf([yup.ref('password')], 'As senhas devem ser iguais')
+  .required('Confirmar sua senha'),
+ }) .required();
 
   const {
     register,
@@ -38,14 +48,15 @@ export function Login() {
 
   const onSubmit = async (data) => {
       const response = await toast.promise(
-      api.post('/sessions', {
+      api.post('/users', {
+      name: data.name,
       email: data.email,
       password: data.password,
     }),
     {
        pending: 'Verificando seus dados ',
-       success: 'Seja Bem-Vindo(a)',
-       error: 'Email ou Senha incorretos',
+       success: 'Cadastro efetuado com sucesso!',
+       error: 'Ops , algo deu errado! Tente novamente.',
 
     },
     
@@ -61,11 +72,14 @@ export function Login() {
       </LeftContainer>
      <RightContainer>
       <Title>
-        Olá , seja bem vindo a <span>Gamers !</span> 
-        <br />
-        Acesse com seu <span>Login e senha</span>
+        Criar Conta
       </Title>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>  
+          <InputContainer>
+            <label>Name</label>
+            <input type="text" {...register('name')}/>
+            <p>{errors?.name?.message}</p> 
+          </InputContainer>
           <InputContainer>
             <label>Email</label>
             <input type="email" {...register('email')}/>
@@ -76,10 +90,15 @@ export function Login() {
             <input type="password" {...register('password')}/>
             <p>{errors?.password?.message}</p>
           </InputContainer>
-          <Button type="submit">🕹️</Button>  
+          <InputContainer>
+            <label>Confirmar Senha</label>
+            <input type="password" {...register('confirmPassword')}/>
+            <p>{errors?.confirmPassword?.message}</p> 
+          </InputContainer>
+          <Button type="submit">Criar Conta</Button> 
       </Form>
        <p>
-        Não possui conta? <a>Clique aqui.</a> 
+        Já possui conta? <a>Clique aqui.</a> 
        </p>
      </RightContainer>
     </Container>
