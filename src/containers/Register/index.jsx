@@ -4,13 +4,15 @@ import * as yup from 'yup';
 import Logo from '../../assets/gamers.svg';
 import { Button } from '../../components/button';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { 
   Container,  
   Form, 
   InputContainer, 
   LeftContainer, 
   RightContainer,
-  Title
+  Title,
+  Link,
  } from './styles.js';
 
 import { api } from '../../services/api.js';
@@ -20,6 +22,7 @@ import { api } from '../../services/api.js';
  
 export function Register() {
   
+  const navigate = useNavigate();
 
   const schema = yup.object({
   name: yup.string().required('O nome é Obrigatorio'),
@@ -46,22 +49,36 @@ export function Register() {
 
   console.log(errors); 
 
+  
+  
+  
   const onSubmit = async (data) => {
-      const response = await toast.promise(
-      api.post('/users', {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    }),
-    {
-       pending: 'Verificando seus dados ',
-       success: 'Cadastro efetuado com sucesso!',
-       error: 'Ops , algo deu errado! Tente novamente.',
-
-    },
+     
     
-   ); 
-      console.log(response);
+    try {
+      const {status } = await api.post('/users', 
+    {
+      name: data.name,
+      email: data.email,               ///body da requisição
+      password: data.password,
+    },
+    {
+      validateStatus: () => true,  ////Axios, considere qualquer status HTTP como uma resposta válida.Por padrão, o Axios considera alguns códigos HTTP como erro.
+    },
+   );
+    
+   if (status === 200 || status === 201) {
+      setTimeout(() => {navigate('/Login'); }, 2000);
+     toast.success('Conta criada com sucesso!');
+    }else if (status === 409){
+      toast.error('Email ja cadastrado! Faça o login para continuar');
+    }else{
+      throw new Error();
+    }
+   }catch  {
+      toast.error('Falha no Sistema! Tente Novamente');
+   }
+       
   };
   
   
@@ -98,7 +115,7 @@ export function Register() {
           <Button type="submit">Criar Conta</Button> 
       </Form>
        <p>
-        Já possui conta? <a>Clique aqui.</a> 
+        Já possui conta? <Link to='/'>Clique aqui.</Link> 
        </p>
      </RightContainer>
     </Container>

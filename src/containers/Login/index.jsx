@@ -4,13 +4,15 @@ import * as yup from 'yup';
 import Logo from '../../assets/gamers.svg';
 import { Button } from '../../components/button';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { 
   Container,  
   Form, 
   InputContainer, 
   LeftContainer, 
   RightContainer,
-  Title
+  Title,
+  Link,
  } from './styles.js';
 
 import { api } from '../../services/api.js';
@@ -20,6 +22,8 @@ import { api } from '../../services/api.js';
  
 export function Login() {
   
+  const navigate = useNavigate();
+
 
   const schema = yup.object({
   email:yup.string().email('Digite um e-mail válido').required('O e-mail é obrigatorio'),
@@ -44,8 +48,15 @@ export function Login() {
     }),
     {
        pending: 'Verificando seus dados ',
-       success: 'Seja Bem-Vindo(a)',
-       error: 'Email ou Senha incorretos',
+       success: {
+        render() {
+          setTimeout(() => {
+            navigate('/Home');
+          }, 2000);
+          return 'Seja Bem-Vindo(a)';
+        },
+      },
+      error: 'Email ou Senha incorretos',
 
     },
     
@@ -79,7 +90,7 @@ export function Login() {
           <Button type="submit">🕹️</Button>  
       </Form>
        <p>
-        Não possui conta? <a>Clique aqui.</a> 
+        Não possui conta? <Link to='/cadastro'>Clique aqui.</Link> 
        </p>
      </RightContainer>
     </Container>

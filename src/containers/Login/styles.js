@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Link as ReactLink} from 'react-router-dom';
+
 import Gamersbackground from  '../../assets/gamers_background.svg';
 import Joysticksback from  '../../assets/joysticks_back.svg';
 
@@ -107,3 +109,8 @@ export const InputContainer = styled.div`
 
 
 
+export const Link = styled(ReactLink)`
+   text-decoration: none;
+   color: #fff;
+  
+`;
