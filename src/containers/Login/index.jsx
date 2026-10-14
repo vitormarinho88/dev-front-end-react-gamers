@@ -41,27 +41,26 @@ export function Login() {
   console.log(errors); 
 
   const onSubmit = async (data) => {
-      const response = await toast.promise(
-      api.post('/sessions', {
-      email: data.email,
-      password: data.password,
-    }),
-    {
-       pending: 'Verificando seus dados ',
-       success: {
-        render() {
-          setTimeout(() => {
-            navigate('/Home');
-          }, 2000);
-          return 'Seja Bem-Vindo(a)';
-        },
+  try {
+    const response = await api.post('/sessions',
+      { email: data.email, 
+        password: data.password 
       },
-      error: 'Email ou Senha incorretos',
+      { validateStatus: () => true }
+    );
 
-    },
-    
-   ); 
-      console.log(response);
+    if (response.status === 200 || response.status === 201) {
+      toast.success('Seja Bem-Vindo(a)');
+      setTimeout(() => navigate('/Home'), 2000);
+    } else if (response.status === 401 || response.status === 409) {
+      toast.error('Email ou Senha incorretos');
+    } else {
+      throw new Error();
+    }
+  } catch {
+    toast.error('Falha no Sistema! Tente Novamente');
+  }
+   
   };
   
   

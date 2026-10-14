@@ -50,8 +50,6 @@ export function Register() {
   console.log(errors); 
 
   
-  
-  
   const onSubmit = async (data) => {
      
     
