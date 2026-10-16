@@ -1,5 +1,5 @@
-
-//import { useNavigate } from 'react-router-dom';
+import { CategoriesCarousel } from '../../components/CategoriesCarousel';
+import { OffersCarousel } from '../../components/OffersCarousel';
 import { 
   
   Banner,
@@ -15,12 +15,12 @@ export function Home() {
     return( 
     <main>
         <Banner>
-            
+             <h1>Seja Bem Vindo !</h1>
         </Banner>
         <Container>
           <Content>
-            <div>CATEGORIAS</div>
-            <div>OFERTAS DO DIA</div>
+            <CategoriesCarousel /> 
+            <OffersCarousel />
           </Content>
         </Container>
     </main>

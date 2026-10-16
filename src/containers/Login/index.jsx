@@ -42,7 +42,7 @@ export function Login() {
 
   const onSubmit = async (data) => {
   try {
-    const response = await api.post('/sessions',
+    const response =  await api.post('/sessions',      
       { email: data.email, 
         password: data.password 
       },
@@ -50,6 +50,11 @@ export function Login() {
     );
 
     if (response.status === 200 || response.status === 201) {
+       
+      const { token } = response.data;
+
+      localStorage.setItem('token', token);
+    
       toast.success('Seja Bem-Vindo(a)');
       setTimeout(() => navigate('/Home'), 2000);
     } else if (response.status === 401 || response.status === 409) {

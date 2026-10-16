@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import BannerGamer from '../../assets/processador.jpg'
-import BackgroundGamer from '../../assets/background-gamer.svg';
+import BannerGamer from '../../assets/nintendo_gradient.png'
+import BackgroundGamer from '../../assets/background_441450_purple_lines.png';
 
 
 export const Banner = styled.div`
@@ -9,19 +9,35 @@ export const Banner = styled.div`
   height: 100%;
   background-size: cover;
   background-position: center;
-  height: 530px;
+  height: 350px;
+
+  h1{
+    font-family: 'Road Rage', sans-serif;
+    color: #fff;
+    font-size: 50px;
+    color: #fdfdfd;
+    position: absolute;
+    right: 5%;
+    top: 10%;
+  }
 `;
 
 export const Container = styled.section`
  background: linear-gradient(rgba(255, 255, 255, 0.6))
                             ,rgba(255, 255, 255, 0.6);
  
- background: url('${BackgroundGamer}');
+ background:url('${BackgroundGamer}');
+ 
+ 
 
- height: 500px;
+ 
+ height: 600px;
 
 `;
 
 export const Content = styled.div`
+  padding-bottom: 70px;
+  
+
 
 `
