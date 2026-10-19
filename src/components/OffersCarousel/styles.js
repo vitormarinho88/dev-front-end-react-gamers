@@ -5,7 +5,14 @@ export const Container = styled.div `
         padding-right: 40px;
     }
 
+    overflow-x: hidden;
+   
+    .react-multi-carousel-list {
+      overflow: visible;
+   }
+
     padding-left: 40px;
+    padding-bottom: 45px;
 
 `;
 
@@ -31,28 +38,3 @@ export const Title = styled.h2 `
    }
 `;
 
-export const ContainerItems = styled.div `
-   background: url('${(props) => props.$imageUrl}');
-   background-position: center;
-   background-size: cover;
-   border-radius: 30px;
-
-   display: flex;
-   align-items: center;
-   padding: 20px 30px;
-   width: 80%;
-   height: 250px;
-   
-
-
-   p{
-      color: #ffff;
-      background-color: rgba(0,0,0,0.5);
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 100px;
-      margin-right: 80px;
-   } 
-`;

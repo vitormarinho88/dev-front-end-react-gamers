@@ -3,10 +3,12 @@ import CarouselModule from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import { api } from '../../services/api';
-import { Container, ContainerItems, Title } from './styles.js';
+import { Container, Title } from './styles.js';
+
+import { CardProduct } from '../CardProduct';
 
 const Carousel = CarouselModule.default ?? CarouselModule;
-console.log({ Carousel, Container, Title, ContainerItems });
+
 
 export function OffersCarousel() {
   const [offers, setOffers] = useState([]);
@@ -15,12 +17,15 @@ export function OffersCarousel() {
     async function loadProducts() {
       const { data } = await api.get('/products');
 
+      const onlyOffers = data.filter((product) => product.offer);
+
+      setOffers(onlyOffers);
       
-      console.log(data);
-    }
+
+    };
 
     loadProducts();
-  }, []);
+  }, []);  ///[] no final do useEffect é chamado de array de dependências.O array vazio representa ausência de dependências reativas.
 
   const responsive = {
     superLargeDesktop: {
@@ -51,10 +56,8 @@ export function OffersCarousel() {
         partialVisible={false}
         itemClass="carousel-item"
       >
-        {products.map((category) => (
-          <ContainerItems key={category.id} $imageUrl={category.url}>
-            <p>{category.name}</p>
-          </ContainerItems>
+        {offers.map((product) => (
+           <CardProduct key={product.id} product={product} />
         ))}
       </Carousel>
     </Container>

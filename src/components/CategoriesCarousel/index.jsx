@@ -6,7 +6,7 @@ import { api } from '../../services/api';
 import { Container, ContainerItems, Title } from './styles.js';
 
 const Carousel = CarouselModule.default ?? CarouselModule;
-console.log({ Carousel, Container, Title, ContainerItems });
+
 
 export function CategoriesCarousel() {
   const [categories, setCategories] = useState([]);
@@ -16,8 +16,8 @@ export function CategoriesCarousel() {
       const { data } = await api.get('/categories');
 
       setCategories(data);
-      console.log(data);
-    }
+      
+    };
 
     loadCategories();
   }, []);
@@ -40,6 +40,8 @@ export function CategoriesCarousel() {
       items: 1,
     },
   };
+
+ 
 
   return (
     <Container>
