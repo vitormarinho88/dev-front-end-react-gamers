@@ -6,6 +6,7 @@ import { api } from '../../services/api';
 import { Container, Title } from './styles.js';
 
 import { CardProduct } from '../CardProduct';
+import { formatPrice } from '../../utils/formatPrice.js';
 
 const Carousel = CarouselModule.default ?? CarouselModule;
 
@@ -17,12 +18,15 @@ export function OffersCarousel() {
     async function loadProducts() {
       const { data } = await api.get('/products');
 
-      const onlyOffers = data.filter((product) => product.offer);
+      const onlyOffers = data
+      .filter((product) => product.offer)
+      .map((product) => ({currencyValue: formatPrice(product.price), ...product,
+        
+      }));
 
       setOffers(onlyOffers);
       
-
-    };
+    }
 
     loadProducts();
   }, []);  ///[] no final do useEffect é chamado de array de dependências.O array vazio representa ausência de dependências reativas.

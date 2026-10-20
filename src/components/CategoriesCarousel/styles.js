@@ -5,7 +5,9 @@ export const Container = styled.div `
         padding-right: 40px;
     }
 
-    padding-left: 40px;
+    
+
+   padding-left: 40px;
 
 `;
 
