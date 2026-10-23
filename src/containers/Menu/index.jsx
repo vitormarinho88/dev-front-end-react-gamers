@@ -1,70 +1,96 @@
-import { useEffect , useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { api } from '../../services/api'; 
-import { Container , Banner , ProductsContainer , CategoryMenu , CategoryButton } from './styles';
+import { api } from '../../services/api.js';
+import {
+  Container,
+  Banner,
+  ProductsContainer,
+  CategoryMenu,
+  CategoryButton,
+} from './styles';
 import { formatPrice } from '../../utils/formatPrice.js';
-import {CardProduct} from '../../components/CardProduct';
-
+import { CardProduct } from '../../components/CardProduct';
+import { useNavigate } from 'react-router-dom';
 
 export function Menu() {
-  
   const [categories, setCategories] = useState([]);
-
-  const [products , setProducts ] = useState([]);
+  const [products, setProducts] = useState([]);
+  //const [filteredProducts, setFiltered] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadCategories() {
       const { data } = await api.get('/categories');
 
-      const newCategories = [{id: 0, name: 'Todas'}, ...data];
-        
-      setCategories(newCategories );
-      
-    };
+      const newCategories = [{ id: 0, name: 'Todas' }, ...data];
+
+      setCategories(newCategories);
+    }
 
     async function loadProducts() {
       const { data } = await api.get('/products');
 
-      const newProducts = data.map((product) => 
-      ({currencyValue: formatPrice(product.price), ...product,
-        
+      const newProducts = data.map((product) => ({
+        currencyValue: formatPrice(product.price),
+        ...product,
       }));
 
       setProducts(newProducts);
-      
-    }  
-     
+    }
+
     loadCategories();
     loadProducts();
   }, []);
-  
-  
+
+   const filtered =
+    activeCategory === 0
+      ? products
+      : products.filter((product) => product.category_id === activeCategory);
+ 
+
+
   return (
-    
     <Container>
-       <Banner>
-        <h1> 
-            AS MELHORES 
-            <br />
-            PLACAS DE VIDEO 
-            <br />
-            ESTA AQUI!                     
+      <Banner>
+        <h1>
+          AS MELHORES
+          <br />
+          PLACAS DE VIDEO
+          <br />
+          ESTA AQUI!
         </h1>
       </Banner>
-       
-       <CategoryMenu>
-       {categories.map((category) => (
-          <CategoryButton key={category.id}>{category.name}</CategoryButton>
-       ))}
-       </CategoryMenu>
-         
-       <ProductsContainer>
-       {products.map(product => (
-         <CardProduct product={product} key={product.id}  />
-       ))}
+
+      <CategoryMenu>
+        {categories.map((category) => (
+          <CategoryButton
+            key={category.id}
+            $isActiveCategory={category.id === activeCategory }
+            onClick={() => {
+              navigate(
+                {
+                  pathname: '/Menu',
+                  search: `?categoria=$(category.id)`,
+                },
+                {
+                  replace: true,
+                },
+              );
+
+              setActiveCategory(category.id);
+            }}
+          >
+            {category.name}
+          </CategoryButton>
+        ))}
+      </CategoryMenu>
+
+      <ProductsContainer>
+        {filtered.map((product) => (
+          <CardProduct product={product} key={product.id} />
+        ))}
       </ProductsContainer>
-
     </Container>
-   );
-
+  );
 }

@@ -42,9 +42,9 @@ export const Container = styled.div`
 
 export const CardImage = styled.img`
 
-   height: 100px;
+   height: 120px;
    position: absolute;
-   top: -50px;
+   top: -70px;
    
  
 `;
