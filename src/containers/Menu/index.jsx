@@ -10,16 +10,35 @@ import {
 } from './styles';
 import { formatPrice } from '../../utils/formatPrice.js';
 import { CardProduct } from '../../components/CardProduct';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 
 export function Menu() {
+ 
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-  //const [filteredProducts, setFiltered] = useState([]);
-  const [activeCategory, setActiveCategory] = useState(0);
+  
   const navigate = useNavigate();
 
+  const { search } = useLocation();
+  
+  const queryParams = new URLSearchParams(search);
+   
+
+  const [activeCategory, setActiveCategory] = useState(() =>{
+    const categoryId = +queryParams.get('categoria');
+   
+    if(categoryId){
+      return categoryId;
+    }
+
+    return 0;
+  });
+
+ 
+
+
   useEffect(() => {
+    
     async function loadCategories() {
       const { data } = await api.get('/categories');
 
@@ -41,12 +60,10 @@ export function Menu() {
 
     loadCategories();
     loadProducts();
-  }, []);
+ 
+ }, []);
 
-   const filtered =
-    activeCategory === 0
-      ? products
-      : products.filter((product) => product.category_id === activeCategory);
+  const filtered = activeCategory === 0 ? products : products.filter((product) => product.category_id === activeCategory);
  
 
 
@@ -71,7 +88,7 @@ export function Menu() {
               navigate(
                 {
                   pathname: '/Menu',
-                  search: `?categoria=$(category.id)`,
+                  search: `?categoria=${category.id}`,
                 },
                 {
                   replace: true,
