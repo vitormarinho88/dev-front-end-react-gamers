@@ -3,6 +3,7 @@ import BannerMenu from '../../assets/gpu-menu.png';
 import BackgroundGamer from '../../assets/background_441450_purple_lines.png';
 import { Link } from 'react-router-dom';
 
+
 export const Container = styled.div`
   width: 100%;
   min-height:100vh;
@@ -10,6 +11,8 @@ export const Container = styled.div`
   background:url('${BackgroundGamer}');
 
 `;
+
+
 
 export const Banner = styled.div`
  display: flex;

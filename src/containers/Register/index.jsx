@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import Logo from '../../assets/gamers.svg';
-import { Button } from '../../components/button';
+import { Button } from '../../components/Button';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { 

@@ -7,9 +7,11 @@ import {
   ProductsContainer,
   CategoryMenu,
   CategoryButton,
-} from './styles';
+
+} from './styles.js';
 import { formatPrice } from '../../utils/formatPrice.js';
 import { CardProduct } from '../../components/CardProduct';
+import { ReturnButton } from '../../components/ReturnButton';
 import { useLocation, useNavigate} from 'react-router-dom';
 
 export function Menu() {
@@ -77,7 +79,13 @@ export function Menu() {
           <br />
           ESTA AQUI!
         </h1>
+        <ReturnButton onClick={()=> {
+           navigate('/Home')
+        }}> </ReturnButton>
       </Banner>
+      
+      
+      
 
       <CategoryMenu>
         {categories.map((category) => (
