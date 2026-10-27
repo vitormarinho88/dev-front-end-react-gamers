@@ -5,6 +5,7 @@ import Logo from '../../assets/gamers.svg';
 import { Button } from '../../components/Button';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../hooks/useUser.js';
 import { 
   Container,  
   Form, 
@@ -23,7 +24,7 @@ import { api } from '../../services/api.js';
 export function Login() {
   
   const navigate = useNavigate();
-
+  const {putUserData} = useUser();
 
   const schema = yup.object({
   email:yup.string().email('Digite um e-mail válido').required('O e-mail é obrigatorio'),
@@ -51,10 +52,12 @@ export function Login() {
 
     if (response.status === 200 || response.status === 201) {
        
-      const { token } = response.data;
+      //const { token } = response.data;
+      //localStorage.setItem('token', token);
+      const  userData  = response.data;
+      putUserData(userData);
 
-      localStorage.setItem('token', token);
-    
+      
       toast.success('Seja Bem-Vindo(a)');
       setTimeout(() => navigate('/Home'), 2000);
     } else if (response.status === 401 || response.status === 409) {
@@ -65,7 +68,8 @@ export function Login() {
   } catch {
     toast.error('Falha no Sistema! Tente Novamente');
   }
-   
+  
+
   };
   
   
