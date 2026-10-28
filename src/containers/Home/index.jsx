@@ -1,5 +1,5 @@
 import { CategoriesCarousel } from '../../components/CategoriesCarousel';
-import { OffersCarousel } from '../../components/OffersCarousel';
+import { OffersCarousel } from '../../components/OffersCarousel'; 
 import { 
   
   Banner,
