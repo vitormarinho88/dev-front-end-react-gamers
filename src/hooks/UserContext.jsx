@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
     }
   });
 
-  const putUserData = (data) => {
+  const putUserData = (data) => {                                   /////putUserData: atualiza o estado e salva os dados no localStorage
     setUserInfo(data);
     localStorage.setItem('devgamers:userData', JSON.stringify(data));
   };

@@ -32,12 +32,21 @@ export const Navigation = styled.nav`
     gap: 20px;
  }
 
+  hr{
+    height: 24px;
+    border: 1px solid #625e5e;
+  }
+  
+
 `;
 
 export const HeaderLink = styled(Link)`
-color:#ffff;
+color:${(props) => (props.$isActive ? '#9758a6' : '#fff')};
+border-bottom: ${(props) => (props. $isActive ? '1px solid #9758a6' : 'none')};
+padding-bottom: 5px;
 text-decoration: none;
 font-size: 14px;
+transition: color 200ms;
 
 &:hover{
     color: #9758a6;
