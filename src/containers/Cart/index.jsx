@@ -1,5 +1,6 @@
 import Logo from '../../assets/gamers_2.svg';
 
+import { CartItems, CartResume } from '../../components';
 import { Container, Banner, Title, Content } from './styles.js';
 
 export function Cart() {
@@ -10,7 +11,8 @@ export function Cart() {
       </Banner>
       <Title> Checkout - Pedido </Title>
       <Content>
-
+       <CartItems  />
+       <CartResume />
       </Content>
     </Container>
   );
