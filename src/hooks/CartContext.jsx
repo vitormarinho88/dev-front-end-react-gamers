@@ -15,11 +15,11 @@ const loadCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
-  const [CartProducts, setCartProducts] = useState(loadCart);
+  const [cartProducts, setCartProducts] = useState(loadCart);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(CartProducts));
-  }, [CartProducts]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cartProducts));
+  }, [cartProducts]);
 
   const putProductInCart = (product) => {
     setCartProducts((prev) => {
@@ -66,7 +66,7 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider
       value={{
-        CartProducts,
+        cartProducts,
         putProductInCart,
         clearCart,
         deleteProduct,

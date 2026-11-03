@@ -6,7 +6,7 @@ import  TrashIcon  from '../../assets/trash.svg';
 import { ProductImage, ButtonGroup, EmptyCart, ProductTotalPrice, TrashImage } from './styles.js';
 
 export function CartItems() {
-  const { CartProducts, increaseProduct, decreaseProduct,  deleteProduct  } = useCart();
+  const { cartProducts, increaseProduct, decreaseProduct,  deleteProduct  } = useCart();
 
   return (
     <Table.Root>
@@ -21,8 +21,8 @@ export function CartItems() {
         </Table.Tr>
       </Table.Header>
       <Table.Body>
-        {CartProducts?.length ? (
-          CartProducts.map((product) => (
+        {cartProducts?.length ? (
+          cartProducts.map((product) => (
             <Table.Tr key={product.id}>
               <Table.Td>
                 <ProductImage src={product.url} />

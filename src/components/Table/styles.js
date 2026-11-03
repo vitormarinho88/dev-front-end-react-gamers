@@ -5,7 +5,7 @@ width: 100%;
 border-collapse: collapse;
 background-color: #fff;
 border-radius: 20px;
-margin-left: 160px;
+
 `;
 
 export const Header = styled.thead`
