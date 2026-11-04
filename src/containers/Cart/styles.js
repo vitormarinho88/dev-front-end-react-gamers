@@ -38,19 +38,10 @@ export const Title = styled.div`
  font-size: 32px;
  font-weight:800;
  padding-bottom: 12px;
- color: #61a120;
+ color: #000000;
  text-align: center;
  position: relative;
 
- &::after{
-    position: absolute;
-    left: calc(50% -28px);
-    bottom: 0;
-    content: '';
-    width: 56px;
-    height: 4px;
-    background-color: #61a120;
- }
 
 `;
 
