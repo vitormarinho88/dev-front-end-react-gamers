@@ -9,17 +9,16 @@ import { api } from '../../services/api.js';
 import { useCart } from '../../hooks/useCart.js';
 import { formatPrice } from '../../utils/formatPrice.js';
 
-const DELIVERY_TAX = 500;
 
 export function CartResume() {
   const navigate = useNavigate();
   const { cartProducts, clearCart } = useCart();
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); //INICIALIZAÇÃO(FALSE)
   const redirectTimer = useRef(null);
 
   const finalPrice = cartProducts.reduce(
-    (acc, current) => current.price * current.quantity + acc,
+    (acc, current) => current.price * current.quantity + acc,  ///reduce , reduz os numeros de um array inteiro para um valor 
     0,
   );
 
@@ -28,15 +27,38 @@ export function CartResume() {
   }, []);
 
   const submitOrder = async () => {
-    if (isSubmitting) return;
+    if (isSubmitting) return;                                ////Uma ressalva técnica: essa proteção no frontend melhora a experiência, mas não garante que pedidos duplicados sejam impossíveis. O backend também precisa proteger a operação, por exemplo, utilizando uma chave de idempotência ou alguma regra de negócio apropriada.
     setIsSubmitting(true);
 
     const products = cartProducts.map((product) => ({
       id: product.id,
       quantity: product.quantity,
+      price: product.price,                            ///map, so preciso de (id , quantity e price)
     }));
 
+
     try {
+     const {data} = await api.post('/create-payment-intent', {products});
+     
+      navigate('/Checkout', {
+        state: data,
+      });
+    } catch ( error ) {
+      console.error(error); 
+       toast.error('Erro, tente novamente', {
+          position: 'top-right',
+          autoClose:5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+    }
+
+    
+  /*   try {
       const { status } = await api.post(
         '/order',
         { products },
@@ -63,7 +85,7 @@ export function CartResume() {
       toast.error('Falha no sistema! Tente novamente');
     }
 
-    setIsSubmitting(false);
+    setIsSubmitting(false); */
   };
 
   return (
@@ -73,12 +95,10 @@ export function CartResume() {
           <h2 className="title">Resumo do pedido</h2>
           <p className="items">Itens</p>
           <p className="items-price">{formatPrice(finalPrice)}</p>
-          <p className="delivery-tax">Taxa de Entrega</p>
-          <p className="delivery-tax-price">{formatPrice(DELIVERY_TAX)}</p>
         </div>
         <div className="container-bottom">
           <p>Total</p>
-          <p>{formatPrice(finalPrice + DELIVERY_TAX)}</p>
+          <p>{formatPrice(finalPrice)}</p>
         </div>
       </Container>
       <Button onClick={submitOrder} disabled={isSubmitting}>
@@ -89,81 +109,9 @@ export function CartResume() {
 }
 
 
-/*
-import { Button } from '../Button';
-import { Container } from './styles.js';
 
-import { api } from '../../services/api.js';
-import { useCart } from '../../hooks/useCart.js';
-import { toast } from 'react-toastify';
-import { formatPrice } from '../../utils/formatPrice.js';
-import { useEffect, useState, useNavigate } from 'react';
-
-export function CartResume() {
-  const navigate = useNavigate();
-
-  const [finalPrice, setFinalPrice] = useState(0);
-
-  const [deliveryTax] = useState(500);
-
-  const { CartProducts, clearCart } = useCart();
-
-  useEffect(() => {
-    const sumaAllItems = CartProducts.reduce((acc, current) => {
-      return current.price * current.quantity + acc;
-    }, 0);
-
-    setFinalPrice(sumaAllItems);
-  }, [cartProducts]);
-
-  const submitOrder = async () => {
-    const products = CartProducts.map((product) => {
-      return { id: product.id, quantity: product.quantity };
-    });
-
-    try {
-      const { status } = await api.post(
-        '/order',
-        { products },
-        {
-          validateStatus: () => true,
-        },
-      );
-
-      if (status === 200 || status === 201) {
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
-        toast.success('Pedido Realizado com sucesso !');
-
-        clearCart();
-      } else if (status === 409) {
-        toast.error('Falha ao relizar seu pedido');
-      } else {
-        throw new Error();
-      }
-    } catch {
-      toast.error('Falha no Sistema! Tente Novamente');
-    }
-  };
-
-  return (
-    <div>
-      <Container>
-        <div className="container-top">
-          <h2 className="title">Resumo do pedido</h2>
-          <p className="items">Itens</p>
-          <p className="items-price">{formatPrice(finalPrice)}</p>
-          <p className="delivery-tax">Taxa de Entrega</p>
-          <p className="delivery-tax-price">{formatPrice(deliveryTax)}</p>
-        </div>
-        <div className="container-bottom">
-          <p>Total</p>
-          <p>{formatPrice(finalPrice + deliveryTax)}</p>
-        </div>
-      </Container>
-      <Button onClick={submitOrder}> Finalizar Pedido </Button>
-    </div>
-  );
-};
-*/
+////Um detalhe de arquitetura: esse cálculo está no frontend
+//  para apresentar o resumo ao usuário. Entretanto, 
+// o backend precisa recalcular o valor utilizando 
+// os preços oficiais do banco de dados. Nunca confie 
+// no preço enviado pelo frontend para fechar um pedido.

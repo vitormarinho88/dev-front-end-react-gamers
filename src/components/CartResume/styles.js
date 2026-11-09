@@ -49,13 +49,13 @@ margin-bottom: 20px;
 
     .items-price{
         grid-area:items-price ;
-        padding-left: 20px;
+        padding-left: 0px;
     }
 
 
     .delivery-tax{
       grid-area: delivery-tax;
-      padding-left: 20px;
+      padding-left:10px;
 
     }
 
