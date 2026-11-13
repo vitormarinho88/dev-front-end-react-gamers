@@ -8,10 +8,12 @@ import {
   Login,
   CompletePayment,
   Checkout,
+  Admin,
 } from '../containers';
 
 import { UserLayout } from '../layouts/UserLayout';
 import { PrivateRoute } from './PrivateRoute';
+import { AdminLayout } from '../layouts/AdminLayout';
 
 export function Router() {
   return (
@@ -28,6 +30,10 @@ export function Router() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/complete" element={<CompletePayment />} />
         </Route>
+      </Route>
+
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin/home" element={<Admin />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/login" replace />} />
