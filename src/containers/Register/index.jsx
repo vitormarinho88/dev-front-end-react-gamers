@@ -66,7 +66,7 @@ export function Register() {
    );
     
    if (status === 200 || status === 201) {
-      setTimeout(() => {navigate('/Login'); }, 2000);
+      setTimeout(() => {navigate('/login'); }, 2000);
      toast.success('Conta criada com sucesso!');
     }else if (status === 409){
       toast.error('Email ja cadastrado! Faça o login para continuar');
@@ -113,7 +113,7 @@ export function Register() {
           <Button type="submit">Criar Conta</Button> 
       </Form>
        <p>
-        Já possui conta? <Link to='/'>Clique aqui.</Link> 
+        Já possui conta? <Link to='/login'>Clique aqui.</Link> 
        </p>
      </RightContainer>
     </Container>

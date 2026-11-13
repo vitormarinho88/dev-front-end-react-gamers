@@ -33,7 +33,7 @@ export function Header() {
         <div>
           <HeaderLink to="/" $isActive={pathname ==='/'}>Home</HeaderLink>
           <hr> </hr>
-          <HeaderLink to="/Menu" $isActive={pathname === '/Menu'}>Produtos</HeaderLink>
+          <HeaderLink to="/menu" $isActive={pathname === '/menu'}>Produtos</HeaderLink>
         </div>
       </Navigation>
       <Options>

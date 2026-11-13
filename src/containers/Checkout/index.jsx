@@ -5,6 +5,7 @@ import stripePromise from '../../Config/stripeConfig.js';
 import { CheckoutForm } from "../../components/Stripe/CheckoutForm";
 
 
+
 export function Checkout() {
     
   const {

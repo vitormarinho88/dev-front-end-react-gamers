@@ -13,7 +13,7 @@ import '../styles.css';
 export function CheckoutForm() {
   const { cartProducts, clearCart } = useCart();
   const redirectTimer = useRef(null);
-  
+
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -56,12 +56,13 @@ export function CheckoutForm() {
         );
 
         if (status === 200 || status === 201) {
-          toast.success('Pedido realizado com sucesso!');
-          clearCart();
-
           redirectTimer.current = setTimeout(() => {
-            navigate(`/Complete?payment_intent_client_secret=${paymentIntent.client_secret}`);
+            navigate(
+              `/complete?payment_intent_client_secret=${paymentIntent.client_secret}`,
+            );
           }, 2000);
+          clearCart();
+          toast.success('Pedido realizado com sucesso!');
           return;
         }
 
@@ -75,7 +76,9 @@ export function CheckoutForm() {
         toast.error('Falha no sistema! Tente novamente');
       }
     } else {
-      toast.error('Falha no sistema! Tente novamente');
+      navigate(
+        `/complete?payment_intent_client_secret=${paymentIntent.client_secret}`,
+      );
     }
 
     setIsLoading(false);

@@ -80,7 +80,7 @@ export function Menu() {
           ESTA AQUI!
         </h1>
         <ReturnButton onClick={()=> {
-           navigate('/Home')
+           navigate('/')
         }}> </ReturnButton>
       </Banner>
       
@@ -95,7 +95,7 @@ export function Menu() {
             onClick={() => {
               navigate(
                 {
-                  pathname: '/Menu',
+                  pathname: '/menu',
                   search: `?categoria=${category.id}`,
                 },
                 {

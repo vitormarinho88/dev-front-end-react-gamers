@@ -56,7 +56,7 @@ export function CategoriesCarousel() {
             <CategoryButton
               onClick={() => {
                 navigate({
-                  pathname: '/Menu',
+                  pathname: '/menu',
                   search: `?categoria=${category.id}`,
                 });
               }}

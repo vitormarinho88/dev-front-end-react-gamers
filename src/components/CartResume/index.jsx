@@ -14,6 +14,8 @@ export function CartResume() {
   const navigate = useNavigate();
   const { cartProducts, clearCart } = useCart();
 
+   console.log(clearCart);
+
   const [isSubmitting, setIsSubmitting] = useState(false); //INICIALIZAÇÃO(FALSE)
   const redirectTimer = useRef(null);
 
@@ -23,6 +25,7 @@ export function CartResume() {
   );
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => clearTimeout(redirectTimer.current);
   }, []);
 
@@ -40,7 +43,7 @@ export function CartResume() {
     try {
      const {data} = await api.post('/create-payment-intent', {products});
      
-      navigate('/Checkout', {
+      navigate('/checkout', {
         state: data,
       });
     } catch ( error ) {
@@ -58,34 +61,6 @@ export function CartResume() {
     }
 
     
-  /*   try {
-      const { status } = await api.post(
-        '/order',
-        { products },
-        { validateStatus: () => true },
-      );
-
-      if (status === 200 || status === 201) {
-        toast.success('Pedido realizado com sucesso!');
-        clearCart();
-
-        redirectTimer.current = setTimeout(() => {
-          navigate('/Home');
-        }, 2000);
-        return;
-      }
-
-      if (status === 409) {
-        toast.error('Falha ao realizar seu pedido');
-      } else {
-        throw new Error(`Status inesperado ao criar pedido: ${status}`);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error('Falha no sistema! Tente novamente');
-    }
-
-    setIsSubmitting(false); */
   };
 
   return (
