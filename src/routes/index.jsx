@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
   Cart,
@@ -11,20 +11,26 @@ import {
 } from '../containers';
 
 import { UserLayout } from '../layouts/UserLayout';
+import { PrivateRoute } from './PrivateRoute';
 
 export function Router() {
   return (
     <Routes>
-      <Route element={<UserLayout />}>
-        <Route path='/' element={<Home />} />
-        <Route path='/menu' element={<Menu />} />
-        <Route path='/carrinho' element={<Cart />} />
-        <Route path='/checkout' element={<Checkout />} />
-        <Route path='/complete' element={<CompletePayment />} />
+      <Route path="/" element={<Navigate to="/home" replace />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/cadastro" element={<Register />} />
+
+      <Route element={<PrivateRoute />}>
+        <Route element={<UserLayout />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/carrinho" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/complete" element={<CompletePayment />} />
+        </Route>
       </Route>
 
-      <Route path='/login' element={<Login />} />
-      <Route path="/cadastro" element={<Register />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

@@ -22,7 +22,7 @@ export function Header() {
 
   function logoutUser() {
     logout();
-    navigate('/') 
+    navigate('/home') 
   };
   
   
@@ -31,8 +31,8 @@ export function Header() {
       <Content> 
       <Navigation>
         <div>
-          <HeaderLink to="/" $isActive={pathname ==='/'}>Home</HeaderLink>
-          <hr> </hr>
+          <HeaderLink to="/home" $isActive={pathname ==='/home'}>Home</HeaderLink>
+          <hr/> 
           <HeaderLink to="/menu" $isActive={pathname === '/menu'}>Produtos</HeaderLink>
         </div>
       </Navigation>
@@ -48,7 +48,7 @@ export function Header() {
         </Profile>
        <LinkContainer>
         <ShoppingCartIcon color='#fff' size={24} />
-        <HeaderLink to="/carriho">Carrinho</HeaderLink>
+        <HeaderLink to="/carrinho">Carrinho</HeaderLink>
       </LinkContainer>
       </Options>
      </Content>

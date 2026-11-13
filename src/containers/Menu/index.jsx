@@ -80,7 +80,7 @@ export function Menu() {
           ESTA AQUI!
         </h1>
         <ReturnButton onClick={()=> {
-           navigate('/')
+           navigate('/home')
         }}> </ReturnButton>
       </Banner>
       

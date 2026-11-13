@@ -59,7 +59,7 @@ export function Login() {
 
       
       toast.success('Seja Bem-Vindo(a)');
-      setTimeout(() => navigate('/'), 2000);
+      setTimeout(() => navigate('/home'), 2000);
     } else if (response.status === 401 || response.status === 409) {
       toast.error('Email ou Senha incorretos');
     } else {

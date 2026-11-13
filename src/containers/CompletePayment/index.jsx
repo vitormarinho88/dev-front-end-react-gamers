@@ -69,14 +69,14 @@ const STATUS_CONTENT_MAP = {
     iconColor: '#30B130',
     icon: SuccessIcon,
     buttonText: 'Voltar para a loja',
-    url: '/Home',
+    url: '/home',
   },
   processing: {
     text: 'Pagamento em Processamento.',
     iconColor: '#6D6E78',
     icon: InfoIcon,
     buttonText: 'Voltar para a loja',
-    url: '/Home',
+    url: '/home',
   },
   requires_payment_method: {
     text: 'Falha no pagamenton, Tente Novamente.',
@@ -88,7 +88,7 @@ const STATUS_CONTENT_MAP = {
     iconColor: '#DF1B41',
     icon: ErrorIcon,
     buttonText: 'Tentar Novamente',
-    url: '/Cart',
+    url: '/carrinho',
   },
 };
 
