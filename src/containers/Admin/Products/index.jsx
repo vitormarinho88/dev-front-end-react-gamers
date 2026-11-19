@@ -1,0 +1,9 @@
+export function Products(){
+    return(
+    <div>
+        <h2>
+            produtos
+        </h2>
+    </div>
+    );
+}
