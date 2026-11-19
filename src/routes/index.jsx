@@ -8,10 +8,10 @@ import {
   Login,
   CompletePayment,
   Checkout,
-  Orders,
   NewProduct,
   EditProduct,
   Products,
+  Orders,
 
 } from '../containers';
 
