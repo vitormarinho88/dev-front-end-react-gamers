@@ -61,7 +61,7 @@ export function Login() {
 
         toast.success('Seja Bem-Vindo(a)');
         setTimeout(
-          () => (userData?.admin ? navigate('/admin/home') : navigate('/home')),
+          () => (userData?.admin ? navigate('/admin/pedidos') : navigate('/home')),
           2000,
         );
       } else if (response.status === 401 || response.status === 409) {
