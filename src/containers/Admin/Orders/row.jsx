@@ -16,12 +16,27 @@ import { ProductImage, SelectStatus } from './styles.js';
 import { orderStatusOptions } from './orderStatus.js';
 import { api } from '../../../services/api.js';
 
-export function Row(props) {
-  const { row } = props;
+export function Row( {row, orders, setOrders}) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+
 
   async function newStatusOrder(id, status) {
-    await api.put(`order/${id}`, { status });
+    try {
+      setLoading(true);
+      await api.put(`order/${id}`, { status });
+
+      const newOrders = orders.map((order) =>
+        order._id === id ? { ...order, status } : order,
+      );
+
+      setOrders(newOrders);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -50,8 +65,9 @@ export function Row(props) {
             defaultValue={orderStatusOptions.find(
               (status) => status.value === row.status || null,
             )}
-           onChange={(status) => newStatusOrder(row.orderId , status.value)}
-         />
+            onChange={(status) => newStatusOrder(row.orderId, status.value)}
+            isLoading={loading}
+          />
         </TableCell>
       </TableRow>
       <TableRow aria-hidden={!open ? true : undefined}>
@@ -94,6 +110,8 @@ export function Row(props) {
 }
 
 Row.propTypes = {
+  orders: PropTypes.array.isRequired,
+  setOrders: PropTypes.func.isRequired,
   row: PropTypes.shape({
     orderId: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
