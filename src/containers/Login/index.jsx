@@ -43,7 +43,7 @@ export function Login() {
     resolver: yupResolver(schema),
   });
 
-  console.log(errors);
+ 
 
   const onSubmit = async (data) => {
     try {

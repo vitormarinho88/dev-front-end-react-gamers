@@ -39,8 +39,7 @@ export function Orders() {
       (item) => item.id === activeStatus,
     );
 
-    const filtered =
-      !selected || selected.id === 0
+    const filtered = !selected || selected.id === 0
         ? orders
         : orders.filter((order) => order.status === selected.value);
 
