@@ -23,33 +23,29 @@ function createData(order) {
 
 export function Orders() {
   const [orders, setOrders] = useState([]);
-  const [filteredOrders, setFilteredOrders] = useState([]);
-  const [ActiveStatus, setActiveStatus] = useState([0]);
+  const [activeStatus, setActiveStatus] = useState(0); // número, não array
 
   useEffect(() => {
     async function loadOrders() {
       const { data } = await api.get('order');
-
       setOrders(data);
-      setFilteredOrders(data);
     }
 
     loadOrders();
   }, []);
 
-  const rows = useMemo(() => filteredOrders.map(createData), [filteredOrders]);
+  const rows = useMemo(() => {
+    const selected = orderStatusOptions.find(
+      (item) => item.id === activeStatus,
+    );
 
-  function handleStatus(status) {
-    if (status.id === 0) {
-      setFilteredOrders(orders);
-    } else {
-      const newOrders = orders.filter((order) => order.status === status.value);
+    const filtered =
+      !selected || selected.id === 0
+        ? orders
+        : orders.filter((order) => order.status === selected.value);
 
-      setFilteredOrders(newOrders);
-    }
- 
-    setActiveStatus(status.id)
-  }
+    return filtered.map(createData);
+  }, [orders, activeStatus]);
 
   return (
     <>
@@ -57,8 +53,8 @@ export function Orders() {
         {orderStatusOptions.map((status) => (
           <FilterOption
             key={status.id}
-            onClick={() => handleStatus(status)}
-            $isActiveStatus={ActiveStatus === status.id}
+            onClick={() => setActiveStatus(status.id)}
+            $isActiveStatus={activeStatus === status.id}
           >
             {status.label}
           </FilterOption>
