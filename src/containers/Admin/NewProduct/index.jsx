@@ -15,12 +15,33 @@ import {
   SubmitButton,
   ErrorMessage,
 } from './styles.js';
+import { toast } from 'react-toastify';
+
+const MAX_SIZE = 5 * 1024 * 1024;
 
 const schema = yup.object({
-  name: yup.string().required(),
-  price: yup.number().positive().required(),
-  category: yup.object().required(),
-  file: yup.mixed(),
+  name: yup.string().required('Digite o nome do produto'),
+  price: yup
+    .number()
+    .typeError('Digite um preço válido')
+    .positive('O preço deve ser maior que zero')
+    .required('Digite o preço do produto'),
+  category: yup.object().nullable().required('Escolha uma categoria'),
+  file: yup
+    .mixed()
+    .test('required', 'Escolha um arquivo para continuar', (value) => {
+      return value && value.length > 0;
+    })
+    .test('fileSize', 'Carregue arquivos até 5mb', (value) => {
+      return value && value.length > 0 && value[0].size <= MAX_SIZE;
+    })
+    .test('type', 'Carregue apenas imagens PNG ou JPEG', (value) => {
+      return (
+        value &&
+        value.length > 0 &&
+        ['image/jpeg', 'image/png'].includes(value[0].type)
+      );
+    }),
 });
 
 export function NewProduct() {
@@ -30,7 +51,6 @@ export function NewProduct() {
   useEffect(() => {
     async function loadCategories() {
       const { data } = await api.get('/categories');
-
       setCategories(data);
     }
     loadCategories();
@@ -40,13 +60,34 @@ export function NewProduct() {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const { onChange: onFileChange, ...fileRegister } = register('file');
+
+  const onSubmit = async (data) => {
+    const productFormData = new FormData();
+
+    productFormData.append('name', data.name);
+    productFormData.append('price', data.price);
+    productFormData.append('category_id', data.category.id);
+    productFormData.append('file', data.file[0]);
+
+    try {
+      await toast.promise(api.post('/products', productFormData), {
+        pending: 'Adicionando o produto...',
+        success: 'Produto criado com sucesso',
+        error: 'Falha ao adicionar o produto, tente novamente',
+      });
+
+      reset();
+      setFileName(null);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -60,7 +101,7 @@ export function NewProduct() {
 
         <InputGroup>
           <Label>Preço</Label>
-          <Input type="number" {...register('price')} />
+          <Input type="number" step="0.01" {...register('price')} />
           <ErrorMessage>{errors?.price?.message}</ErrorMessage>
         </InputGroup>
 
@@ -69,16 +110,17 @@ export function NewProduct() {
             <ImageIcon />
             <input
               type="file"
-              {...register('file')}
               accept="image/png, image/jpeg"
-              onChange={(value) => {
-                setFileName(value.target.files[0]?.name);
-                register('file').onChange(value);
+              {...fileRegister}
+              onChange={(e) => {
+                setFileName(e.target.files[0]?.name);
+                onFileChange(e);
               }}
             />
-
             {fileName || 'upload do produto'}
           </LabelUploads>
+
+          <ErrorMessage>{errors?.file?.message}</ErrorMessage>
         </InputGroup>
 
         <InputGroup>
@@ -86,7 +128,8 @@ export function NewProduct() {
           <Controller
             name="category"
             control={control}
-            render={(field) => (
+            defaultValue={null}
+            render={({ field }) => (
               <Select
                 {...field}
                 options={categories}
@@ -97,6 +140,8 @@ export function NewProduct() {
               />
             )}
           />
+
+          <ErrorMessage>{errors?.category?.message}</ErrorMessage>
         </InputGroup>
 
         <SubmitButton type="submit">Adicionar Produto</SubmitButton>
@@ -104,3 +149,4 @@ export function NewProduct() {
     </Container>
   );
 }
+
