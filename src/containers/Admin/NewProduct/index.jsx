@@ -6,6 +6,7 @@ import { api } from '../../../services/api.js';
 import { useEffect, useState } from 'react';
 import {
   Container,
+  ContainerCheckBox,
   Form,
   Input,
   InputGroup,
@@ -16,6 +17,7 @@ import {
   ErrorMessage,
 } from './styles.js';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const MAX_SIZE = 5 * 1024 * 1024;
 
@@ -27,6 +29,7 @@ const schema = yup.object({
     .positive('O preço deve ser maior que zero')
     .required('Digite o preço do produto'),
   category: yup.object().nullable().required('Escolha uma categoria'),
+  offer: yup.bool(),
   file: yup
     .mixed()
     .test('required', 'Escolha um arquivo para continuar', (value) => {
@@ -47,6 +50,7 @@ const schema = yup.object({
 export function NewProduct() {
   const [fileName, setFileName] = useState(null);
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadCategories() {
@@ -75,6 +79,7 @@ export function NewProduct() {
     productFormData.append('price', data.price);
     productFormData.append('category_id', data.category.id);
     productFormData.append('file', data.file[0]);
+    productFormData.append('offer', data.offer);
 
     try {
       await toast.promise(api.post('/products', productFormData), {
@@ -88,6 +93,10 @@ export function NewProduct() {
     } catch (err) {
       console.log(err);
     }
+
+    setTimeout(() => {
+      navigate('/admin/produtos');
+    }, 2000);
   };
 
   return (
@@ -144,9 +153,18 @@ export function NewProduct() {
           <ErrorMessage>{errors?.category?.message}</ErrorMessage>
         </InputGroup>
 
+        <InputGroup>
+          <ContainerCheckBox>
+            <input
+              type="CheckBox"
+              {...register('offer')}
+            />
+            <Label>Produto em Oferta ?</Label>
+          </ContainerCheckBox>
+        </InputGroup>
+
         <SubmitButton type="submit">Adicionar Produto</SubmitButton>
       </Form>
     </Container>
   );
 }
-

@@ -87,3 +87,17 @@ export const ErrorMessage = styled.span`
   font-weight:600;
 
 `;
+
+export const ContainerCheckBox = styled.div`
+  
+  display:flex;
+  gap:10px;
+  cursor: pointer;
+  margin-top: 10px;
+
+  input{
+    cursor: pointer;
+  }
+
+
+`;
